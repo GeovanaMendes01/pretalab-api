@@ -1,6 +1,7 @@
 import express from "express";
 import { transactions } from "./data";
 import { getTransactionById } from "./controller/transaction";
+import { createTransaction } from "./controller/transaction";
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.get("/transactions", (_req, res) => {
 
 app.get("/transactions/:id", (req, res) => getTransactionById(req, res));
 
+app.post("/transactions", (req, res) => createTransaction(req, res));
 
 export default app;

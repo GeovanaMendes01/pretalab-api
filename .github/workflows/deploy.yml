@@ -33,6 +33,9 @@ jobs:
       matrix:
         node-version: [ 20.x ]
 
+    env:
+      MONGODB_URI_TEST: ${{ secrets.MONGODB_URI_TEST }}
+
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
@@ -43,11 +46,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Create src/.env.test from secrets
-      run: |
-        mkdir -p src
-          echo "MONGODB_URI_TEST=${{ secrets.MONGODB_URI_TEST }}" > src/.env.test
-
     - name: npm test integration
       run: npm run test:integration
 
@@ -55,9 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
-    needs:
-    - test-unit
-    - test-integration
+    needs: [ test-unit, test-integration ]
 
     permissions:
       contents: "read"

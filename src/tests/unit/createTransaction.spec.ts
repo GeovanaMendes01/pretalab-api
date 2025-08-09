@@ -1,10 +1,9 @@
 import { addTransaction } from "../../service/transactions";
-import { Transaction } from "../../data";
+import { NewTransaction } from "../../core/entities/Transaction";
 
 describe("Service - addTransaction", () => {
   it("deve adicionar uma nova transação", () => {
-    const novaTransacao: Transaction = {
-      id: "1",
+    const novaTransacao: NewTransaction = {
       description: "Teste",
       amount: 1000,
       date: "07-08-2025",
@@ -14,6 +13,9 @@ describe("Service - addTransaction", () => {
 
     const resultado = addTransaction(novaTransacao);
 
-    expect(resultado).toMatchObject(novaTransacao);
+    expect(resultado).toMatchObject({
+      ...novaTransacao, 
+      id: expect.any(String),   
+    });
   });
 });

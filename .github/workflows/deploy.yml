@@ -42,6 +42,12 @@ jobs:
         cache: "npm"
     - name: Install dependencies
       run: npm install
+
+    - name: Create src/.env.test from secrets
+      run: |
+        mkdir -p src
+          echo "MONGODB_URI_TEST=${{ secrets.MONGODB_URI_TEST }}" > src/.env.test
+
     - name: npm test integration
       run: npm run test:integration
 

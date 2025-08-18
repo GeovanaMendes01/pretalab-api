@@ -22,5 +22,6 @@ app.post("/transactions", (req, res) => createTransaction(req, res));
 
 app.post("/ai", async (req, res) => aiResponse(req, res));
 
+app.post("/chat", (req, res) => aiResponse(req, res));
 
 export default app;

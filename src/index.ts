@@ -1,9 +1,11 @@
 import express from "express";
 import { transactions } from "./data";
-import { getTransactionById } from "./controller/transaction";
-import { createTransaction } from "./controller/transaction";
+import { getTransactionById } from "./app/controller/transaction";
+import { createTransaction } from "./app/controller/transaction";
 
 const app = express();
+
+app.use(express.json());
 
 app.get("/", (_req, res) => {
   res.json({ message: "Transactions API" });

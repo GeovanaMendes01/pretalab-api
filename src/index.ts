@@ -3,6 +3,8 @@ import { transactions } from "./data";
 import { getTransactionById } from "./app/controller/transaction";
 import { createTransaction } from "./app/controller/transaction";
 import { aiResponse } from "./app/controller/ai";
+import { getAllPurchases, getPurchaseById, checkout } from "./app/controller/purchase";
+import { getAllProducts } from "./app/controller/product";
 
 const app = express();
 
@@ -23,5 +25,13 @@ app.post("/transactions", (req, res) => createTransaction(req, res));
 app.post("/ai", async (req, res) => aiResponse(req, res));
 
 app.post("/chat", (req, res) => aiResponse(req, res));
+
+app.get("/purchases", getAllPurchases);
+
+app.get("/purchases/:id", (req, res) => getPurchaseById(req, res));
+
+app.post("/checkout", (req, res) => checkout(req, res));
+
+app.get("/products", getAllProducts);
 
 export default app;

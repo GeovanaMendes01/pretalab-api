@@ -1,6 +1,6 @@
 import { Purchase, PurchaseItem } from "../entities/Purchase";
 import { MongoPurchaseRepository } from "../../infra/database/MongoPurchaseRepository";
-import { calcTotal } from "../../service/purchase"; // usa do service
+import { calcTotal } from "../../service/purchase"; 
 
 const repo = new MongoPurchaseRepository();
 

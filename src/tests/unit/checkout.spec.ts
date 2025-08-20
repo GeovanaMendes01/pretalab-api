@@ -6,7 +6,7 @@ describe("Service - calcTotal", () => {
       { productId: 1, quantity: 1, name: "Notebook", price: 7500 },
       { productId: 2, quantity: 2, name: "Mouse",    price: 350  },
     ]);
-    expect(total).toBe(7500 + 2 * 350); // 8200
+    expect(total).toBe(7500 + 2 * 350); 
   });
 
   it("retorna 0 para lista vazia", () => {

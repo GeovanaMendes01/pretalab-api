@@ -21,8 +21,8 @@ describe("GET /products", () => {
 
   it("deve retornar 200 e a lista de produtos", async () => {
     await mongooseProduct.create([
-      { id: 1, name: "Notebook Gamer Pro", price: 7500 },
-      { id: 2, name: "Mouse Sem Fio",      price: 350  },
+      { id: "1", name: "Notebook Gamer Pro", price: 7500 },
+      { id: "2", name: "Mouse Sem Fio",      price: 350  },
     ]);
 
     const res = await request(app).get("/products");
@@ -31,7 +31,7 @@ describe("GET /products", () => {
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBeGreaterThanOrEqual(2);
     expect(res.body[0]).toMatchObject({
-      id: expect.any(Number),
+      id: expect.any(String),
       name: expect.any(String),
       price: expect.any(Number),
     });

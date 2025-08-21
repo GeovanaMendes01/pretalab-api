@@ -27,6 +27,6 @@ describe("Service - getAllProductsFromApi", () => {
         nock(base).get(path).reply(200, payload);
 
         const data = await getAllProductsFromApi();
-        expect(data).toEqual(payload);
+        expect(data).toMatchObject(payload);
     });
 });

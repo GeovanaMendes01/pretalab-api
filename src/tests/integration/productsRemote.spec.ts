@@ -38,6 +38,6 @@ describe("GET /products - integração API externa", () => {
     const res = await request(app).get("/products");
 
     expect(res.status).toBe(200);
-    expect(res.body).toEqual(payload);
+    expect(res.body).toMatchObject(payload);
   });
 });

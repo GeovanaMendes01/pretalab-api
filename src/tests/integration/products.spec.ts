@@ -5,6 +5,7 @@ import { mongooseProduct } from "../../infra/database/mongooseProduct";
 
 describe("GET /products", () => {
   beforeAll(async () => {
+    delete process.env.PRODUCTS_API_URL;
     const uri = process.env.MONGODB_URI_TEST!;
     await mongoose.connect(uri);
   });

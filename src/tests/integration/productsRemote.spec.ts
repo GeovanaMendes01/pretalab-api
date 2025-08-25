@@ -22,7 +22,7 @@ describe("GET /products - integração API externa", () => {
     nock.enableNetConnect();
   });
 
-  it("deve usar o payload da API externa quando ela responde 200", async () => {
+  it("retorna 200 e a lista da API externa", async () => {
     const payload = [
         { id: "1", name: "Notebook Gamer Pro", price: 7500 },
         { id: "2", name: "Mouse Sem Fio Ultra-leve", price: 350 },
@@ -40,4 +40,15 @@ describe("GET /products - integração API externa", () => {
     expect(res.status).toBe(200);
     expect(res.body).toMatchObject(payload);
   });
+
+  it("propaga o erro da API (status + body)", async () => {
+    const upstream = { message: "upstream down" };
+    nock(base).get(path).reply(503, upstream);
+
+    const res = await request(app).get("/products");
+
+    expect(res.status).toBe(503);
+    expect(res.body).toMatchObject(upstream);
+  });
+  
 });

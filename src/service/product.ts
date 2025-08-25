@@ -7,12 +7,32 @@ export const getAllProductsService = (): Product[] => {
 
 export const getAllProductsFromApi = async (): Promise<Product[]> => {
   const url = process.env.PRODUCTS_API_URL;
-  if (!url) throw new Error("PRODUCTS_API_URL não definida");
+  if (!url) {
+    const e: any = new Error("UPSTREAM_NOT_CONFIGURED");
+    e.status = 500;
+    e.payload = { message: "PRODUCTS_API_URL não configurada" };
+    throw e;
+  }
 
   const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`REMOTE_API_${res.status}`);
+
+  const text = await res.text();
+  let body: any = undefined;
+  try {
+    body = text ? JSON.parse(text) : undefined;
+  } catch {
+    body = text;
   }
-  const data = (await res.json()) as Product[];
-  return data;
+
+  if (!res.ok) {
+    const e: any = new Error("UPSTREAM_ERROR");
+    e.status = res.status;
+    e.payload =
+      typeof body === "object" && body !== null
+        ? body
+        : { message: body || res.statusText };
+    throw e;
+  }
+
+  return body as Product[];
 };

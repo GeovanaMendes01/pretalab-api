@@ -10,7 +10,7 @@ describe("Service - getAllProductsService", () => {
     const result = getAllProductsService();
     if (result.length) {
       expect(result[0]).toMatchObject({
-        id: expect.any(Number),
+        id: expect.any(String),
         name: expect.any(String),
         price: expect.any(Number),
       });

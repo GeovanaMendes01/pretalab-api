@@ -5,7 +5,7 @@ import { mongooseTransaction } from "../../infra/database/mongooseTransaction";
 
 describe("POST /transactions", () => {
     beforeAll(async () => {
-    const uri = process.env.MONGODB_URI_TEST!;
+    const uri = process.env.MONGODB_URI!;
     await mongoose.connect(uri); 
     });
 

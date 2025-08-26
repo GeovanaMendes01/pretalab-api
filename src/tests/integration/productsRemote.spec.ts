@@ -33,12 +33,12 @@ describe("GET /products - integração API externa", () => {
         { id: "7", name: "SSD NVMe 1TB", price: 800 },
     ];
 
-    nock(base).get(path).reply(200, payload);
+    nock(base).get(path).reply(200, { data: payload });
 
     const res = await request(app).get("/products");
 
     expect(res.status).toBe(200);
-    expect(res.body).toMatchObject(payload);
+    expect(res.body).toMatchObject({ data: payload });
   });
 
   it("propaga o erro da API (status + body)", async () => {
@@ -50,5 +50,5 @@ describe("GET /products - integração API externa", () => {
     expect(res.status).toBe(503);
     expect(res.body).toMatchObject(upstream);
   });
-  
+
 });

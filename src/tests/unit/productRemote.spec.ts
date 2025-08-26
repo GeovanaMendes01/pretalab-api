@@ -24,9 +24,9 @@ describe("Service - getAllProductsFromApi", () => {
             { id: "7", name: "SSD NVMe 1TB", price: 800 },
         ];
 
-        nock(base).get(path).reply(200, payload);
+        nock(base).get(path).reply(200, { data: payload });
 
         const data = await getAllProductsFromApi();
-        expect(data).toMatchObject(payload);
+        expect(data).toMatchObject({ data: payload });
     });
 });

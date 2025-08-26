@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
-    id:    { type: Number, required: true, unique: true },
+    id:    { type: String, required: true, unique: true },
     name:  { type: String, required: true },
     price: { type: Number, required: true },
   },
@@ -10,6 +10,7 @@ const productSchema = new mongoose.Schema(
     versionKey: false,
     toJSON: {
       transform(_doc, ret: any) {
+        ret.id = String(ret._id);
         delete ret._id;
         return ret;
       },

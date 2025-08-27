@@ -1,7 +1,11 @@
-export const geminiInteral = (data: any) => {
-    return {
-        response: data.candidates[0].content.parts[0].text,
-    };
+export type GeminiContent = {
+  candidates?: Array<{
+    content?: { parts?: Array<{ text?: string }> };
+  }>;
 };
 
-//preciso tipar esse data: any (descobrir qual o tipo desse data )
+export const geminiInteral = (data: GeminiContent) => {
+  const response =
+    data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+  return { response };
+};

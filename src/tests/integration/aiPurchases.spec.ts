@@ -44,7 +44,7 @@ describe("POST /purchases (IA)", () => {
     ]);
 
     const res = await request(app)
-      .post("/purchases")
+      .post("/ai/purchases")
       .send({ prompt: "Analise minhas compras" });
 
     expect(res.status).toBe(200);

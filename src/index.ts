@@ -28,7 +28,7 @@ app.get("/purchases", getAllPurchases);
 
 app.get("/purchases/:id", (req, res) => getPurchaseById(req, res));
 
-app.post("/purchases", (req, res) => aiPurchasesResponse(req, res));
+app.post("/ai/purchases", (req, res) => aiPurchasesResponse(req, res));
 
 app.post("/checkout", (req, res) => checkout(req, res));
 

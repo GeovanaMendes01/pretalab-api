@@ -7,4 +7,13 @@ export class MongoTransactionRepository implements TransactionRepository {
     const saved = await mongooseTransaction.create(data);
     return saved.toJSON() as unknown as Transaction;
   }
+  async list(): Promise<Transaction[]> {
+    const transactions = await mongooseTransaction.find();
+    return transactions.map(d => d.toJSON() as unknown as Transaction);
+  }
+
+  async findById(id: string): Promise<Transaction | null> {
+    const doc = await mongooseTransaction.findById(id);
+    return doc ? (doc.toJSON() as unknown as Transaction) : null;
+  }
 }

@@ -1,29 +1,47 @@
 import { geminiInteral } from "../adapters/gemini";
-import { chat, generateText } from "./gemini";
+import { financialAssistent, shoppingAssistant } from "./gemini";
+import { listTransactionsFromDB } from "./transactions";
+import { listPurchasesFromDB } from "./purchase";
+import { loadConversation, saveMessage } from "./chatHistory";
 
-const chatContext: any[] = [];
+type GeminiMsg = { role: "user" | "model"; parts: Array<{ text: string }> };
+const toGemini = (role: "user" | "model", text: string): GeminiMsg => ({
+  role,
+  parts: [{ text }],
+});
 
-const chatItem = (role: string, text: string) => {
-    const data = {
-        role,
-        parts: [
-            {
-                text,
-            },
-        ],
-    };
-    chatContext.push(data);
-}; 
+const txConversationId = "default-transactions";
 
 export const chatAiInteration = async (prompt: string) => {
-    chatItem("user", prompt);
+  const history = await loadConversation(txConversationId);
+  const transactionsData = await listTransactionsFromDB();
 
-    const data = await chat(chatContext);
-    const { response } = geminiInteral(data);
-    chatItem("model", response);
+  const context: GeminiMsg[] = history.map((h) => toGemini(h.role as "user" | "model", h.text));
+  context.push(toGemini("user", prompt));
 
-    return{
-        response,
-        context: chatContext,
-    }; 
+  const raw = await financialAssistent(context, transactionsData);
+  const { response } = geminiInteral(raw);
+
+  await saveMessage(txConversationId, "user", prompt, "transactions");
+  await saveMessage(txConversationId, "model", response, "transactions");
+
+  return { response, context };
+};
+
+const purchasesConversationId = "default-purchases";
+
+export const chatAiPurchases = async (prompt: string) => {
+  const history = await loadConversation(purchasesConversationId);
+  const purchasesData = await listPurchasesFromDB();
+
+  const context: GeminiMsg[] = history.map((h) => toGemini(h.role as "user" | "model", h.text));
+  context.push(toGemini("user", prompt));
+
+  const raw = await shoppingAssistant(context, purchasesData);
+  const { response } = geminiInteral(raw);
+
+  await saveMessage(purchasesConversationId, "user", prompt, "purchases");
+  await saveMessage(purchasesConversationId, "model", response, "purchases");
+
+  return { response, context };
 };
